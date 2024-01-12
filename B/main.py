@@ -59,7 +59,7 @@ def show_tuning_process(show_forest=True, show_cnn=True, show_resnet=True):
     """ Show the hyperparameter tuning process for task B in the report. If one process is long, just turn the argument to False """
     seed_everything(seed=42)
     print("loading data...")
-    data = np.load('./Datasets/pneumoniamnist.npz')
+    data = np.load('./Datasets/pathmnist.npz')
     xtrain, ytrain, xval, yval, xtest, ytest = data["train_images"], data["train_labels"], data["val_images"], data["val_labels"], data["test_images"], data["test_labels"]
     data.close()
     print("loading data complete")
