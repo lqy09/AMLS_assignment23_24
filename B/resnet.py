@@ -24,6 +24,16 @@ def ResNetModel(num_classes=9, unfreeze_layers=['layer4'], pretrained=True):
     return model
 
 def train_resnet(model, train_dataloader, val_dataloader, epochs=10, lr=0.001, scheduling=False):
+    """ Train a resnet 
+    Args:
+    - model: resnet model
+    - train_dataloader: training dataset
+    - val_dataloader: the validation dataset during training
+    - epochs: training epochs
+    - lr: learning rate
+    - scheduling: whether to use learning rate scheduling
+
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     criterion = nn.CrossEntropyLoss()
@@ -64,6 +74,7 @@ def train_resnet(model, train_dataloader, val_dataloader, epochs=10, lr=0.001, s
     return training_loss, val_accuracy
 
 def eval_resnet(model, val_dataloader):
+    """ Evaluate resnet model on validation dataloader, returns the validated accuracy"""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.eval()
     model.to(device)
@@ -81,6 +92,7 @@ def eval_resnet(model, val_dataloader):
 
 
 def tuning_resnet(train_dataloader, val_dataloader, lrs=[0.001, 0.0001]):
+    """ Performs the hyperparameter tuning of ResNet-18"""
     model = ResNetModel()
     fig, ax = plt.subplots(2, 1, figsize=(10,8))        
     for lr in lrs:

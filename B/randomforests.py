@@ -2,6 +2,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 
 def randomforest_tuning(param_grid, xtrain, ytrain):
+    """ 5-fold cv grid search tuning for random forest """
     forest = RandomForestClassifier(n_jobs=2)
     grid_search = GridSearchCV(forest, param_grid, cv=5, scoring='accuracy')
     grid_search.fit(xtrain, ytrain)

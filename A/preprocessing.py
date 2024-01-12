@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from torchvision import transforms
 
 def seed_everything(seed=42):
+    """ set seed for everything for reproduciablity """
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
@@ -39,10 +40,11 @@ def training_data_augmentation(xtrain, ytrain, num_transformed_images=2280):
 
 def preprocessing_CNN(xtrain, ytrain, xval, yval, xtest, ytest, batch_size=64):
     """
+    Modify the shape of the dataset
     x: np.ndarray nx28x28 -> tensor nx1x28x28
     
-    return:
-    dataloader
+    Returns:
+    train, validation and test dataloader
     """
     # normalize in range 0-1
     xtrain_norm = xtrain/255.0

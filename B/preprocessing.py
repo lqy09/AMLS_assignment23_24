@@ -33,6 +33,7 @@ class PathmnistDataset(Dataset):
         return image, label
 
 def preprocessing_feature_extraction(xtrain, ytrain, xval, yval, xtest, ytest):
+    """ perform feature extraction on all dataset and returns the extracted features on all datasets """
     seed_everything()
     autoencoder = load_autoencoder("B/Models/conv_autoencoder.pth")
     xtrain_new = reduce_dimension(autoencoder, xtrain)
@@ -44,6 +45,7 @@ def preprocessing_feature_extraction(xtrain, ytrain, xval, yval, xtest, ytest):
     return xtrain_new, ytrain_new, xval_new, yval_new, xtest_new, ytest_new
 
 def preprocessing_no_extraction(xtrain, ytrain, xval, yval, xtest, ytest):
+    """ flatten the data without extrating features """
     n_train, n_val, n_test = len(xtrain), len(xval), len(xtest)
     xtrain_new = xtrain.reshape((n_train,-1))
     xval_new = xval.reshape((n_val,-1))
@@ -58,7 +60,7 @@ def preprocessing_CNN(xtrain, ytrain, xval, yval, xtest, ytest, batch_size=64):
     x: np.ndarray nx28x28x3 -> tensor nx3x28x28
     
     return:
-    dataloader
+    training, validation and test dataloaders
     """
     # normalize in range 0-1
     xtrain_norm = xtrain/255.0
@@ -89,6 +91,7 @@ def preprocessing_CNN(xtrain, ytrain, xval, yval, xtest, ytest, batch_size=64):
 def preprocessing_resnet(xtrain, ytrain, xval, yval, xtest, ytest, batch_size=64):    
     """
     x: np.ndarray nx28x28x3 -> tensor nx3x224x224
+    resizes the data from 28x28 to 224x224 to be able to use in pretrained resnet-18
     """
 
     transform = transforms.Compose([

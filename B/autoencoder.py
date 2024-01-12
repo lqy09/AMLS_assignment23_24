@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
     
 class Autoencoder(nn.Module):
-    """ architecture from https://www.geeksforgeeks.org/implement-convolutional-autoencoder-in-pytorch-with-cuda/"""
+    """ architecture adapted from https://www.geeksforgeeks.org/implement-convolutional-autoencoder-in-pytorch-with-cuda/"""
     def __init__(self):
         super(Autoencoder, self).__init__()
         self.encoder = nn.Sequential(
@@ -38,7 +38,16 @@ class Autoencoder(nn.Module):
         return x
     
 def train_autoencoder(xtrain, epochs=100, save_model = False):
-    """ input a ndarray """
+    """ input a ndarray and train the autoencoder 
+    Args:
+    xtrain (ndarray): training dataset
+    epochs: training epoch
+    save_model: whether to save the model in Model directory
+
+    Returns:
+    model: the trained autoencoder
+    loss_history: the loss during training
+    """
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = Autoencoder()
     model.to(device)
@@ -69,6 +78,7 @@ def train_autoencoder(xtrain, epochs=100, save_model = False):
     return model, loss_history
 
 def visualize_reconstruction(model, xtrain):
+    """ visualize the reconstruction result of model on a few examples of xtrain"""
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     with torch.no_grad():
         xtrain_tensor = torch.tensor(xtrain/255.0, dtype=torch.float32)
@@ -84,7 +94,7 @@ def visualize_reconstruction(model, xtrain):
     plt.savefig('B/figures/reconstruction.png')
 
 def load_autoencoder(path):
-    """ input a string of the path to the autoencoder """
+    """ input a string of the path to the autoencoder and returns the model """
     model = Autoencoder()
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
@@ -92,6 +102,7 @@ def load_autoencoder(path):
     return model
 
 def reduce_dimension(model, x):
+    """ returns the encoded features of x """
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     x_tensor = torch.tensor(x/255.0, dtype=torch.float32)
     x_tensor = x_tensor.permute(0, 3, 1, 2)

@@ -18,7 +18,7 @@ class CNN(nn.Module):
         - input_channels (int): channel num of input image
         - output_size (int): output num
         - conv_layers (list of tuples): a list of conv layer configs, each element (num_filters, kernel_size, stride, padding)
-        - fc_layers (list of int): a list of fc layer configs, each element unit, must match the output of conv layers
+        - fc_layers (list of int): a list of fc layer configs, each element is the unit of a fc layer, the first element must match the output of conv layers
         - pool_size (int): the size of pooling kernel
         - activation_func : the activation function chosen from (F.relu, torch.sigmoid, torch.tanh, etc.)
         - dropout_conv : the dropout ratio of convolutional layer
@@ -42,7 +42,7 @@ class CNN(nn.Module):
         self.fc_dropout_layers = nn.ModuleList()
         for i, _ in enumerate(fc_layers):
             if i > 0:
-                # must match conv layer output
+                # Important: must match conv layer output
                 self.fc_layers.append(nn.Linear(fc_layers[i-1], fc_layers[i]))
                 self.fc_dropout_layers.append(nn.Dropout(dropout_fc))
         self.output_layer = nn.Linear(fc_layers[-1], output_size)
@@ -58,6 +58,19 @@ class CNN(nn.Module):
         return x
     
 def train_cnn(cnn, train_dataloader, val_dataloader=None, epochs=20, lr=0.001, use_validation=False):
+    """ Train a cnn 
+        Args:
+        - cnn: cnn model
+        - train_dataloader: the train dataloader used for training
+        - val_dataloader: the validataion dataloader if want to see the validation acc during training process
+        - epochs: training epochs
+        - lr: learning rate
+        - use_validation: whether want to see the validation acc
+
+        Returns:
+        - training_loss: the training loss
+        - val_accuracy: the validation accuracy during training
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     cnn.to(device)
     epochs = epochs
@@ -85,6 +98,13 @@ def train_cnn(cnn, train_dataloader, val_dataloader=None, epochs=20, lr=0.001, u
     return training_loss, val_accuracy
 
 def eval_cnn(cnn, val_dataloader):
+    """
+    Evaluate a cnn
+    Args:
+    - cnn: cnn model for evaluation
+    - val_dataloader: the dataset dataloader for evaluation
+    """
+    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     cnn.to(device)
     cnn.eval()
@@ -107,6 +127,10 @@ def eval_cnn(cnn, val_dataloader):
     return accuracy, auc
 
 def lr_tuning(train_dataloader, val_dataloader, lrs=[0.01, 0.003, 0.001, 0.0003, 0.0001]):
+    """
+    Plots the figure for learning rate tuning
+    """
+    
     fig, ax = plt.subplots(2, 1, figsize=(10,8))
     for lr in lrs:
         conv = [(16, 3, 1, 1), (32, 3, 1, 1)]
@@ -143,7 +167,10 @@ def conv_layer_tuning(train_dataloader,
                              [64*3*3, 128],
                              [128*3*3, 128]],
                       filters=["8,16", "16,32", "32,64", "16,32,64", "32,64,128"]):
-                      
+    """
+    Plots the figure for convolutional layer tuning
+    """
+
     fig, ax = plt.subplots(2, 1, figsize=(10,8))
     for conv, fc, filter in zip(convs, fcs, filters):
         cnn = CNN(input_channels=1, output_size=2, conv_layers=conv, fc_layers=fc, dropout_conv=0.3, dropout_fc=0.6)
@@ -172,6 +199,9 @@ def fc_layer_tuning(train_dataloader,
                         [128*3*3, 256, 128],
                         [128*3*3, 256, 128, 64]],
                     fclayers=["64", "128", "256", "256,128", "256,128,64"]):
+    """
+    Plots the figure for fully connected layer tuning
+    """
     fig, ax = plt.subplots(2, 1, figsize=(10,8))
     for fc, fclayers in zip(fcs, fclayers):
         conv = [(32, 3, 1, 1), (64, 3, 1, 1), (128, 3, 1, 1)]

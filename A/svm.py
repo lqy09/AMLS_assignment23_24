@@ -27,6 +27,7 @@ def SVM_C_tuning_plot(xtrain, ytrain, xval, yval):
     plt.savefig("A/figures/SVM_C_tuning_plot.png")
 
 def SVM_tuning(params, xtrain, ytrain):
+    """ Tune all parameters of SVM using a 5-fold cv grid search with accuracy metric """
     svm = SVC()
     grid_search = GridSearchCV(svm, params, scoring='accuracy', cv=5)
     grid_search.fit(xtrain, ytrain)

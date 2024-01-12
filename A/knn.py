@@ -49,7 +49,9 @@ def KNN_tuning(params, xtrain, ytrain):
     return best_classifier, best_params, cv_results
 
 def KNN_tuning_results_plot(cv_results):
-    """ plot the result of KNN hyperparameter tuning using heat map to visualize """
+    """ 
+    Plot the result of KNN hyperparameter tuning using heat map to visualize 
+    """
     
     df = pd.DataFrame(cv_results)
     weight_values = df['param_weights'].unique()

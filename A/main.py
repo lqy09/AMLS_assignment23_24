@@ -10,6 +10,7 @@ from torchvision import transforms
 from sklearn.metrics import accuracy_score
 
 def train_all_models():
+    """ Train all the best models in the report and show their performance"""
     seed_everything(seed=42)
     print("loading data...")
     data = np.load('./Datasets/pneumoniamnist.npz')
@@ -52,6 +53,7 @@ def train_all_models():
     print(f"val AUC of CNN: {val_auc_cnn}, test AUC of CNN: {test_auc_cnn}")
 
 def show_tuning_process(show_knn=True, show_svm=True, show_cnn=True):
+    """ Show the hyperparameter tuning process in the report. If one process is long, just turn the argument to False """
     seed_everything(seed=42)
     print("loading data...")
     data = np.load('./Datasets/pneumoniamnist.npz')

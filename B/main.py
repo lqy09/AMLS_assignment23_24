@@ -9,6 +9,7 @@ from torchvision import transforms
 from sklearn.metrics import accuracy_score
 
 def train_all_models(train_randomforest=True, train_cnn=True, train_resnet=True):
+    """ training all fine-tuned models for task B, if one process is long, just turn the arguments to False"""
     seed_everything(seed=42)
     print("loading data...")
     data = np.load('./Datasets/pathmnist.npz')
@@ -55,6 +56,7 @@ def train_all_models(train_randomforest=True, train_cnn=True, train_resnet=True)
         print(f"val acc of resnet: {val_acc_resnet}, test acc: {test_acc_resnet}")
 
 def show_tuning_process(show_forest=True, show_cnn=True, show_resnet=True):
+    """ Show the hyperparameter tuning process for task B in the report. If one process is long, just turn the argument to False """
     seed_everything(seed=42)
     print("loading data...")
     data = np.load('./Datasets/pneumoniamnist.npz')
