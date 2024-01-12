@@ -47,7 +47,7 @@ pip install -r A/requirements.txt
 ```
 
 ## Cuda Version
-This project is tested on CUDA 11.6 with GPU accerleration during training. OS used in this project is Windows 11.
+This project is tested on CUDA 11.6 with GPU accerleration during training. OS in this project is Windows 11.
 
 ## Quick Start
 
