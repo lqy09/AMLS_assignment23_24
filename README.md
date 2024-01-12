@@ -4,6 +4,10 @@
 
 This assignment consists of two different tasks on MedMNIST dataset. A is a binary classification problem for PneumoniaMNIST and B is a multiclass classification problem for PathMNIST.
 
+## Datasets
+
+Please download pneumoniamnist.npz and pathmnist.npz files from https://zenodo.org/records/6496656 and insert them into `Datasets` folder.
+
 ## Task A
 
 - Trained CNN models are saved in **Model** folder
