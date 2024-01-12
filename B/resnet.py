@@ -63,6 +63,23 @@ def train_resnet(model, train_dataloader, val_dataloader, epochs=10, lr=0.001, s
     print("training complete")
     return training_loss, val_accuracy
 
+def eval_resnet(model, val_dataloader):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.eval()
+    model.to(device)
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for images, labels in val_dataloader:
+            images, labels = images.to(device), labels.to(device)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+    val_acc = correct / total
+    return val_acc
+
+
 def tuning_resnet(train_dataloader, val_dataloader, lrs=[0.001, 0.0001]):
     model = ResNetModel()
     fig, ax = plt.subplots(2, 1, figsize=(10,8))        
@@ -88,3 +105,4 @@ def tuning_resnet(train_dataloader, val_dataloader, lrs=[0.001, 0.0001]):
     ax[1].legend()
     ax[1].grid(ls=':')
     plt.tight_layout()
+    plt.savefig("B/figures/resnet_tuning.png")

@@ -85,6 +85,8 @@ def train_cnn(cnn, train_dataloader, val_dataloader=None, epochs=20, lr=0.001, u
     return training_loss, val_accuracy
 
 def eval_cnn(cnn, val_dataloader):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    cnn.to(device)
     cnn.eval()
     correct = 0
     total = 0
